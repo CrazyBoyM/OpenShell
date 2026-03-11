@@ -27,6 +27,8 @@ use event::{Event, EventHandler};
 
 /// Duration to show the splash screen before auto-dismissing.
 const SPLASH_DURATION: Duration = Duration::from_secs(3);
+const SSH_SERVER_ALIVE_INTERVAL_SECS: u64 = 30;
+const SSH_SERVER_ALIVE_COUNT_MAX: u64 = 3;
 
 /// Launch the OpenShell TUI.
 ///
@@ -750,6 +752,12 @@ async fn handle_shell_connect(
         .arg("-o")
         .arg("GlobalKnownHostsFile=/dev/null")
         .arg("-o")
+        .arg(format!(
+            "ServerAliveInterval={SSH_SERVER_ALIVE_INTERVAL_SECS}"
+        ))
+        .arg("-o")
+        .arg(format!("ServerAliveCountMax={SSH_SERVER_ALIVE_COUNT_MAX}"))
+        .arg("-o")
         .arg("LogLevel=ERROR")
         .arg("-tt")
         .arg("-o")
@@ -898,6 +906,12 @@ async fn handle_exec_command(
         .arg("UserKnownHostsFile=/dev/null")
         .arg("-o")
         .arg("GlobalKnownHostsFile=/dev/null")
+        .arg("-o")
+        .arg(format!(
+            "ServerAliveInterval={SSH_SERVER_ALIVE_INTERVAL_SECS}"
+        ))
+        .arg("-o")
+        .arg(format!("ServerAliveCountMax={SSH_SERVER_ALIVE_COUNT_MAX}"))
         .arg("-o")
         .arg("LogLevel=ERROR")
         .arg("-tt")
@@ -1319,6 +1333,12 @@ async fn start_port_forwards(
             .arg("UserKnownHostsFile=/dev/null")
             .arg("-o")
             .arg("GlobalKnownHostsFile=/dev/null")
+            .arg("-o")
+            .arg(format!(
+                "ServerAliveInterval={SSH_SERVER_ALIVE_INTERVAL_SECS}"
+            ))
+            .arg("-o")
+            .arg(format!("ServerAliveCountMax={SSH_SERVER_ALIVE_COUNT_MAX}"))
             .arg("-o")
             .arg("LogLevel=ERROR")
             .arg("-o")
